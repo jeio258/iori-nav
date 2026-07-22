@@ -154,6 +154,7 @@
     const btn1 = document.getElementById('btnStyle1');
     const btn2 = document.getElementById('btnStyle2');
     const btn3 = document.getElementById('btnStyle3');
+    document.getElementById('btnStyle4')?.addEventListener('click', () => selectCardStyle('style4'));
     const preview1 = document.getElementById('cardStyle1PreviewContainer');
     const preview2 = document.getElementById('cardStyle2PreviewContainer');
     const preview3 = document.getElementById('cardStyle3PreviewContainer');
@@ -168,6 +169,8 @@
     if (style === 'style2') {
       btn2.classList.add('active');
       preview2.classList.remove('hidden');
+  } else if (style === 'style4') {
+    btn.innerHTML = '<svg class="card-style-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" fill="none"/><line x1="2" y1="8" x2="22" y2="8" stroke="currentColor" opacity="0.3"/><line x1="2" y1="14" x2="22" y2="14" stroke="currentColor" opacity="0.3"/></svg><span>毛玻璃</span>';
     } else if (style === 'style3') {
       btn3.classList.add('active');
       preview3.classList.remove('hidden');
@@ -192,6 +195,7 @@
     const btn1 = document.getElementById('mobileBtnStyle1');
     const btn2 = document.getElementById('mobileBtnStyle2');
     const btn3 = document.getElementById('mobileBtnStyle3');
+    document.getElementById('mobileBtnStyle4')?.addEventListener('click', () => selectMobileCardStyle('style4'));
     if (!btn1 || !btn2 || !btn3) return;
 
     [btn1, btn2, btn3].forEach(btn => {
@@ -200,6 +204,8 @@
 
     if (style === 'style2') {
       btn2.classList.add('active');
+  } else if (style === 'style4') {
+    btn.innerHTML = '<svg class="card-style-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" fill="none"/><line x1="2" y1="8" x2="22" y2="8" stroke="currentColor" opacity="0.3"/><line x1="2" y1="14" x2="22" y2="14" stroke="currentColor" opacity="0.3"/></svg><span>毛玻璃</span>';
     } else if (style === 'style3') {
       btn3.classList.add('active');
     } else {
@@ -383,9 +389,11 @@
     document.getElementById('btnStyle1')?.addEventListener('click', () => selectCardStyle('style1'));
     document.getElementById('btnStyle2')?.addEventListener('click', () => selectCardStyle('style2'));
     document.getElementById('btnStyle3')?.addEventListener('click', () => selectCardStyle('style3'));
+    document.getElementById('btnStyle4')?.addEventListener('click', () => selectCardStyle('style4'));
     document.getElementById('mobileBtnStyle1')?.addEventListener('click', () => selectMobileCardStyle('style1'));
     document.getElementById('mobileBtnStyle2')?.addEventListener('click', () => selectMobileCardStyle('style2'));
     document.getElementById('mobileBtnStyle3')?.addEventListener('click', () => selectMobileCardStyle('style3'));
+    document.getElementById('mobileBtnStyle4')?.addEventListener('click', () => selectMobileCardStyle('style4'));
     document.querySelectorAll('.card-animation-option[data-animation-device="desktop"]').forEach(option => {
       option.addEventListener('click', () => {
         if (!refs.cardAnimationSelect) return;

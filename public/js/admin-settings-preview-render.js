@@ -129,10 +129,11 @@
     const hideCopyText = shared.shouldHideCopyTextForPreview(settings.previewDevice, settings.gridCols);
 
     grid.innerHTML = cards.map(card => {
-      const isNavigationTileStyle = settings.cardStyle === 'style3';
-      const hideCardCategory = isNavigationTileStyle || settings.hideCardCategory;
-      const hideCardDesc = isNavigationTileStyle || settings.hideCardDesc;
-      const hideCardLinks = isNavigationTileStyle || settings.hideCardLinks;
+      const isNavigationTileStyle = settings.cardStyle === "style3";
+      const isGlassStyle = settings.cardStyle === "style4";
+      const hideCardCategory = isNavigationTileStyle || isGlassStyle || settings.hideCardCategory;
+      const hideCardDesc = isNavigationTileStyle || isGlassStyle || settings.hideCardDesc;
+      const hideCardLinks = isNavigationTileStyle || isGlassStyle || settings.hideCardLinks;
       const initial = shared.escapeHTML(card.name.slice(0, 1).toUpperCase() || '站');
       const nameHtml = shared.escapeHTML(card.name);
       const urlHtml = shared.escapeHTML(card.url);
@@ -150,7 +151,7 @@
         'overflow-hidden',
         'transition-all',
         settings.frosted ? '' : 'bg-white border border-primary-100/60 shadow-sm',
-        settings.cardStyle === 'style2' ? 'style-2' : (isNavigationTileStyle ? 'style-3' : ''),
+        settings.cardStyle === 'style2' ? 'style-2' : (isNavigationTileStyle ? 'style-3' : (isGlassStyle ? 'style-4' : '')),
         settings.frosted ? 'frosted frosted-glass-effect' : '',
         hideCardDesc ? 'is-desc-hidden' : '',
         hideCardLinks ? 'is-links-hidden' : '',
@@ -268,6 +269,7 @@
     root.classList.toggle('category-below-search', settings.categoryPosition === 'below_search');
     root.classList.toggle('is-mobile-preview', isMobilePreview);
     root.classList.toggle('uses-card-style-3', settings.cardStyle === 'style3');
+    root.classList.toggle('uses-card-style-4', settings.cardStyle === 'style4');
     if (!isMobilePreview) root.classList.remove('mobile-menu-open');
     const fallbackGridCols = isMobilePreview ? 3 : 4;
     const maxGridCols = isMobilePreview ? 3 : 7;
