@@ -253,6 +253,7 @@ export async function onRequest(context) {
   };
   const getCardStyleGridClass = (style, prefix) => {
     if (style === 'style3') return `${prefix}-card-style3`;
+    if (style === 'style4') return `${prefix}-card-style4`;
     return style === 'style2' ? `${prefix}-card-style2` : `${prefix}-card-style1`;
   };
   const mobileCardStyleClass = getCardStyleGridClass(S.mobile_layout_card_style, 'mobile');
@@ -526,8 +527,8 @@ export async function onRequest(context) {
 
   // 替换 body 标签 + 滚动容器
   const pageStyleClasses = [
-    S.layout_card_style === 'style3' ? 'desktop-page-style3' : '',
-    S.mobile_layout_card_style === 'style3' ? 'mobile-page-style3' : '',
+    S.layout_card_style === 'style4' ? 'desktop-page-style4' : (S.layout_card_style === 'style3' ? 'desktop-page-style3' : ''),
+    S.mobile_layout_card_style === 'style4' ? 'mobile-page-style4' : (S.mobile_layout_card_style === 'style3' ? 'mobile-page-style3' : ''),
     `category-pos-${categoryPosition}`,
   ].filter(Boolean).join(' ');
   html = html.replace(

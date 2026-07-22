@@ -2202,3 +2202,31 @@ body .site-card.style-4 {
   max-width: 38px !important;
   max-height: 38px !important;
 }
+
+/* Desktop + Mobile page-level Style 4 */
+.desktop-page-style4 .site-card,
+.mobile-page-style4 .site-card {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.desktop-page-style4 #sitesGrid,
+.mobile-page-style4 #sitesGrid {
+  gap: 12px !important;
+}
+EOF
+
+git add -A && git commit -m "fix: add style4 validation in settings-parser and index.js page classes" 2>&1 | tail -3 && git push origin master 2>&1
+
+/* Desktop + Mobile page-level Style 4 */
+.desktop-page-style4 .site-card,
+.mobile-page-style4 .site-card {
+  background: rgba(255,255,255,0.08) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.desktop-page-style4 #sitesGrid,
+.mobile-page-style4 #sitesGrid {
+  gap: 12px !important;
+}
+
