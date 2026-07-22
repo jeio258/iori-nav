@@ -4,10 +4,17 @@
   Home.initSearch = function () {
     const sitesGrid = document.getElementById('sitesGrid');
     const searchInputs = document.querySelectorAll('.search-input-target');
-    const engineOptions = document.querySelectorAll('.search-engine-option');
+    /* engineOptions replaced by popup */
     let searchCardCache = null;
     let searchDebounceTimer = null;
     let currentSearchEngine = 'local';
+
+  Home.setSearchEngine = function(url) {
+    currentSearchEngine = url === 'local' ? 'local' : url;
+    const btn = document.querySelector('.search-engine-icon-btn');
+    if (btn) btn.setAttribute('data-engine', currentSearchEngine);
+    reapplyLocalSearchFilter();
+  };
 
     function clearSearchCardCache() {
       searchCardCache = null;
@@ -59,19 +66,28 @@
     }
 
     function updateSearchEngineUI(engine) {
-      engineOptions.forEach(opt => {
-        if (opt.dataset.engine === engine) {
-          opt.classList.add('active');
-        } else {
-          opt.classList.remove('active');
+      const btn = document.querySelector('.search-engine-icon-btn');
+      const currentIcon = btn?.querySelector('.search-engine-current-icon');
+      const items = document.querySelectorAll('.search-engine-popup-item');
+      
+      let placeholder = '搜索书签...';
+      items.forEach(item => {
+        if (item.dataset.engine === engine) {
+          // Update button icon
+          const img = item.querySelector('img');
+          if (currentIcon && img) currentIcon.src = img.src;
         }
       });
-
-      let placeholder = '搜索书签...';
-      switch (engine) {
-        case 'google': placeholder = 'Google 搜索...'; break;
-        case 'baidu': placeholder = '百度搜索...'; break;
-        case 'github': placeholder = 'Github 搜索...'; break;
+      if (engine === 'local') {
+        placeholder = '搜索书签...';
+      } else {
+        // Find engine name from popup items
+        items.forEach(item => {
+          if (item.dataset.engine === engine) {
+            const name = item.querySelector('span')?.textContent;
+            if (name) placeholder = name + ' 搜索...';
+          }
+        });
       }
 
       searchInputs.forEach(input => {

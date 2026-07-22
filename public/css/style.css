@@ -2240,3 +2240,80 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
 .site-card.style-4 .preview-links,
 .site-card.style-4 .preview-category,
 .site-card.style-4 .site-category { display: none !important; }
+
+/* ═══════ Search Engine Icon Popup ═══════ */
+.search-engine-popup-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+.search-engine-icon-btn {
+  width: 34px; height: 34px;
+  padding: 0;
+  border-radius: 50%;
+  background: rgba(127,127,127,0.1);
+  border: 1px solid rgba(127,127,127,0.15);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.search-engine-icon-btn:hover {
+  background: rgba(127,127,127,0.2);
+  border-color: rgba(127,127,127,0.25);
+}
+.search-engine-current-icon {
+  width: 22px; height: 22px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.search-engine-popup {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: rgba(20,20,42,0.95);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 180px;
+  z-index: 150;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.search-engine-popup.hidden { display: none; }
+.search-engine-popup-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.search-engine-popup-item:hover {
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.search-engine-popup-item img {
+  width: 22px; height: 22px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.search-engine-popup-item span {
+  white-space: nowrap;
+}
+/* 隐藏旧版搜索引擎标签 */
+.search-engine-wrapper { display: none !important; }

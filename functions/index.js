@@ -280,12 +280,20 @@ export async function onRequest(context) {
   const statsRowHiddenClass = shouldRenderStatsRow ? '' : 'hidden';
 
   // === 13. 搜索引擎选项 ===
+  let engines = [{"name":"站内","url":"local","icon":""},{"name":"Google","url":"https://www.google.com/search?q=%s","icon":"https://faviconsnap.com/api/favicon?url=https://google.com&size=32"},{"name":"Baidu","url":"https://www.baidu.com/s?wd=%s","icon":"https://faviconsnap.com/api/favicon?url=https://baidu.com&size=32"},{"name":"Github","url":"https://github.com/search?q=%s","icon":"https://faviconsnap.com/api/favicon?url=https://github.com&size=32"}];
+  try { const parsed = JSON.parse(S.home_search_engines || '[]'); if (parsed.length) engines = parsed; } catch(e) {}
   const searchEngineOptions = S.home_search_engine_enabled ? `
-    <div class="flex justify-center items-center gap-3 mb-4 text-sm select-none search-engine-wrapper">
-        <label class="search-engine-option active" data-engine="local"><span>站内</span></label>
-        <label class="search-engine-option" data-engine="google"><span>Google</span></label>
-        <label class="search-engine-option" data-engine="baidu"><span>Baidu</span></label>
-        <label class="search-engine-option" data-engine="github"><span>Github</span></label>
+    <div class="search-engine-popup-wrapper">
+        <button class="search-engine-icon-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('hidden')" aria-label="切换搜索引擎" data-engine="${engines[0].url}">
+            ${engines[0].icon ? `<img src="${engines[0].icon}" class="search-engine-current-icon" alt="">` : engines[0].name[0]}
+        </button>
+        <div class="search-engine-popup hidden">
+            ${engines.map(e => `
+            <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}" onclick="document.querySelector('.search-engine-icon-btn').setAttribute('data-engine','${escapeHTML(e.url)}');this.closest('.search-engine-popup').classList.add('hidden');IoriHome?.setSearchEngine?.('${escapeHTML(e.url)}')">
+                ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="">` : `<span>${escapeHTML(e.name[0]||'?')}</span>`}
+                <span>${escapeHTML(e.name)}</span>
+            </button>`).join('')}
+        </div>
     </div>` : '';
 
   // === 14. Header HTML ===
