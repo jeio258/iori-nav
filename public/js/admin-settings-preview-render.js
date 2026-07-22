@@ -174,14 +174,6 @@
             </button>
           </div>`;
 
-      if (isGlassStyle) {
-        const glassIconSize = 46;
-        const glassLogoHtml = card.logo
-          ? `<img src="${shared.escapeHTML(card.logo)}" alt="${nameHtml}" width="${glassIconSize}" height="${glassIconSize}" class="gotab-glass-img" loading="lazy" decoding="async">`
-          : `<div class="gotab-glass-fallback">${initial}</div>`;
-        return `<a class="${cardClass} gotab-glass-card" href="${urlHtml || '#'}" ${card.hasValidUrl ? 'target="_blank" rel="noopener noreferrer"' : ''} data-id="${shared.escapeHTML(card.id)}"><div class="gotab-glass-icon">${glassLogoHtml}</div><span class="gotab-glass-label">${nameHtml}</span></a>`;
-      }
-
       return `
         <article class="${cardClass}" data-id="${shared.escapeHTML(card.id)}">
           <div class="site-card-content">
