@@ -2186,3 +2186,19 @@ body .site-card.style-4 {
 .site-card.style-4 p,
 .site-card.style-4 .mt-2,
 .site-card.style-4 .mt-3 { display: none !important; }
+
+/* Mobile style4 compatibility */
+#sitesGrid.mobile-card-style4 .site-card.style-4 {
+  padding: 14px 6px 12px !important;
+  gap: 8px !important;
+}
+#sitesGrid.mobile-card-style4 .site-card.style-4 .site-icon {
+  width: 38px !important;
+  height: 38px !important;
+}
+#sitesGrid.mobile-card-style4 .site-card.style-4 .site-icon img {
+  width: 38px !important;
+  height: 38px !important;
+  max-width: 38px !important;
+  max-height: 38px !important;
+}

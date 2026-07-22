@@ -64,9 +64,9 @@
       const mobileGridClass = cols === '1' ? 'grid-cols-1' : (cols === '3' ? 'grid-cols-3' : 'grid-cols-2');
       const mobileCardStyleClass = cardConfig.cardStyle === 'style3'
         ? 'mobile-card-style3'
-        : (cardConfig.cardStyle === 'style2' ? 'mobile-card-style2' : 'mobile-card-style1');
+        : (cardConfig.cardStyle === 'style4' ? 'mobile-card-style4' : (cardConfig.cardStyle === 'style2' ? 'mobile-card-style2' : 'mobile-card-style1'));
       sitesGrid.classList.remove('grid-cols-1', 'grid-cols-2', 'grid-cols-3');
-      sitesGrid.classList.remove('mobile-card-style1', 'mobile-card-style2', 'mobile-card-style3');
+      sitesGrid.classList.remove('mobile-card-style1', 'mobile-card-style2', 'mobile-card-style3', 'mobile-card-style4');
       sitesGrid.classList.add(mobileGridClass);
       sitesGrid.classList.add(mobileCardStyleClass);
     }
