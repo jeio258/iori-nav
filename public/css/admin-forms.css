@@ -268,5 +268,26 @@
   cursor: not-allowed;
 }
 
-
+/* ── Search Engine Management Panel ── */
+.search-engine-row {
+  transition: background 0.15s;
+}
+.search-engine-row:hover {
+  background: #f8f9fa !important;
+}
+.search-engine-row .delete-engine-btn,
+.search-engine-row .set-default-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  font-size: 14px;
+  line-height: 1;
+}
+.search-engine-row .delete-engine-btn:hover {
+  color: #dc3545 !important;
+}
+#addEngineModal {
+  backdrop-filter: blur(4px);
+}
 

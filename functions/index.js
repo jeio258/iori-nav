@@ -270,7 +270,7 @@ export async function onRequest(context) {
   html = html.replace('</body>', '</div></body>');
 
   // 注入 hydration 数据
-  const mainJsMarker = '<script src="/js/main.js';
+  const mainJsMarker = '<script type="module" src="/dist/main.js';
   if (html.includes(mainJsMarker)) {
     html = injectBeforeMarker(html, mainJsMarker, assembled.hydrationScript);
   } else {

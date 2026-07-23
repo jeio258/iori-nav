@@ -25,6 +25,7 @@ import './admin-settings-core.js';
 import './admin-settings-wallpaper.js';
 import './admin-settings-ai.js';
 import './admin-settings.js';
+import './admin-search-engines.js';
 
 (function () {
   function initAdminPage() {
@@ -32,6 +33,7 @@ import './admin-settings.js';
     window.AdminPending?.init?.();
     window.AdminTabs?.init?.();
     window.AdminBookmarkPrivacy?.init?.();
+    window.AdminSettings?.searchEngines?.init?.();
 
     window.loadGlobalCategories?.()
       ?.catch?.(err => console.error('Failed to load categories:', err));

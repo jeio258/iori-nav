@@ -2241,49 +2241,73 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
 .site-card.style-4 .preview-category,
 .site-card.style-4 .site-category { display: none !important; }
 
-/* ═══════ Search Engine Icon Popup ═══════ */
-.search-engine-popup-wrapper {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  flex-shrink: 0;
-  margin-right: 8px;
+/* ═══════ Search Engine Button (inside search field, left side) ═══════ */
+.search-engine-btn-wrapper {
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
 }
-.search-engine-icon-btn {
-  width: 34px; height: 34px;
-  padding: 0;
-  border-radius: 50%;
-  background: rgba(127,127,127,0.1);
-  border: 1px solid rgba(127,127,127,0.15);
-  cursor: pointer;
+.search-engine-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 4px;
+  height: 36px;
+  padding: 0 8px 0 6px;
+  border-radius: 10px;
+  background: rgba(127,127,127,0.08);
+  border: 1px solid rgba(127,127,127,0.12);
+  cursor: pointer;
   transition: all 0.2s;
-  overflow: hidden;
-  flex-shrink: 0;
+  white-space: nowrap;
+  font-size: 13px;
+  color: #555;
 }
-.search-engine-icon-btn:hover {
-  background: rgba(127,127,127,0.2);
-  border-color: rgba(127,127,127,0.25);
+.search-engine-btn:hover {
+  background: rgba(127,127,127,0.15);
+  border-color: rgba(127,127,127,0.2);
 }
-.search-engine-current-icon {
+.search-engine-btn-icon {
   width: 22px; height: 22px;
   object-fit: contain;
   border-radius: 4px;
+  flex-shrink: 0;
 }
+.search-engine-btn-arrow {
+  width: 12px; height: 12px;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+.search-engine-btn-label {
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* 搜索输入框左侧留出引擎按钮空间 */
+.home-search-field .search-input-target {
+  padding-left: 110px !important;
+}
+.home-search-field .home-search-icon {
+  left: 76px !important;
+}
+/* 无外站引擎时隐藏按钮，恢复默认布局 */
+.home-search-field:not(.has-engines) .search-engine-btn-wrapper { display: none; }
+.home-search-field:not(.has-engines) .search-input-target { padding-left: 3rem !important; }
+.home-search-field:not(.has-engines) .home-search-icon { left: 1rem !important; }
+/* ── Popup ── */
 .search-engine-popup {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 6px);
   left: 0;
-  margin-top: 8px;
-  background: rgba(20,20,42,0.95);
+  min-width: 200px;
+  background: rgba(20,20,42,0.96);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 12px;
-  padding: 8px;
-  min-width: 180px;
+  padding: 6px;
   z-index: 150;
-  box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.5);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
 }
@@ -2293,7 +2317,7 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
   align-items: center;
   gap: 10px;
   width: 100%;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border: none;
   border-radius: 8px;
   background: transparent;
@@ -2302,9 +2326,14 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
   font-size: 13px;
   font-family: inherit;
   transition: all 0.15s;
+  text-align: left;
 }
 .search-engine-popup-item:hover {
   background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.search-engine-popup-item.active {
+  background: rgba(99,102,241,0.25);
   color: #fff;
 }
 .search-engine-popup-item img {

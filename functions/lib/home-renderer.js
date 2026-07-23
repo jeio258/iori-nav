@@ -120,11 +120,33 @@ function buildTitleBlock(ctx, themeClasses) {
 function buildSearchBar(ctx, themeClasses) {
   const { settings } = ctx;
   const engines = parseSearchEngines(settings.home_search_engines);
-  const engineOptionsHtml = settings.home_search_engine_enabled ? buildSearchEngineSwitcher(engines) : '';
+  const hasExternalEngines = engines.length > 1; // 多于"站内"= 有外站引擎
+
+  let engineBtnHtml = '';
+  if (hasExternalEngines) {
+    const defaultEngine = engines[0];
+    engineBtnHtml = `
+    <div class="search-engine-btn-wrapper">
+      <button class="search-engine-btn" onclick="event.stopPropagation();this.parentElement.querySelector('.search-engine-popup').classList.toggle('hidden')" aria-label="切换搜索引擎" data-engine="${escapeHTML(defaultEngine.url)}">
+        ${defaultEngine.icon ? `<img src="${escapeHTML(defaultEngine.icon)}" class="search-engine-btn-icon" alt="">` : ''}
+        <span class="search-engine-btn-label">${escapeHTML(defaultEngine.name)}</span>
+        <svg class="search-engine-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <div class="search-engine-popup hidden">
+        ${engines.map(e => `
+        <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}" onclick="document.querySelector('.search-engine-btn').setAttribute('data-engine','${escapeHTML(e.url)}');this.closest('.search-engine-popup').classList.add('hidden');IoriHome?.setSearchEngine?.('${escapeHTML(e.url)}')">
+          ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="">` : `<span>${escapeHTML((e.name||'?')[0])}</span>`}
+          <span>${escapeHTML(e.name)}</span>
+        </button>`).join('')}
+      </div>
+    </div>`;
+  }
+
+  const fieldClass = hasExternalEngines ? 'home-search-field relative has-engines' : 'home-search-field relative';
 
   return `
-    ${engineOptionsHtml}
-    <div class="home-search-field relative">
+    <div class="${fieldClass}">
+      ${engineBtnHtml}
       <input id="headerSearchInput" type="search" placeholder="搜索书签..." class="search-input-target w-full pl-12 pr-4 py-3.5 rounded-2xl transition-all shadow-lg outline-none focus:outline-none focus:ring-2 ${themeClasses.searchInputClass}" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="search" enterkeyhint="search" aria-label="搜索书签" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
       <svg xmlns="http://www.w3.org/2000/svg" class="home-search-icon h-6 w-6 absolute left-4 top-3.5 ${themeClasses.searchIconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
     </div>`;
@@ -143,22 +165,6 @@ function parseSearchEngines(raw) {
   } catch {
     return defaults;
   }
-}
-
-function buildSearchEngineSwitcher(engines) {
-  return `
-    <div class="search-engine-popup-wrapper">
-        <button class="search-engine-icon-btn" onclick="event.stopPropagation();this.nextElementSibling.classList.toggle('hidden')" aria-label="切换搜索引擎" data-engine="${escapeHTML(engines[0].url)}">
-            ${engines[0].icon ? `<img src="${escapeHTML(engines[0].icon)}" class="search-engine-current-icon" alt="">` : escapeHTML(engines[0].name[0] || '?')}
-        </button>
-        <div class="search-engine-popup hidden">
-            ${engines.map(e => `
-            <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}" onclick="document.querySelector('.search-engine-icon-btn').setAttribute('data-engine','${escapeHTML(e.url)}');this.closest('.search-engine-popup').classList.add('hidden');IoriHome?.setSearchEngine?.('${escapeHTML(e.url)}')">
-                ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="">` : `<span>${escapeHTML(e.name[0]||'?')}</span>`}
-                <span>${escapeHTML(e.name)}</span>
-            </button>`).join('')}
-        </div>
-    </div>`;
 }
 
 function buildCategoryNav(ctx) {

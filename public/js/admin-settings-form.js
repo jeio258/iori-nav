@@ -64,7 +64,6 @@
       homeFooterTextInput: document.getElementById('homeFooterText'),
       homeDefaultCategorySelect: document.getElementById('homeDefaultCategory'),
       homeRememberLastCategorySwitch: document.getElementById('homeRememberLastCategorySwitch'),
-      searchEngineSwitch: document.getElementById('searchEngineSwitch'),
       cardRadiusInput: document.getElementById('cardRadius'),
       cardRadiusValue: document.getElementById('cardRadiusValue'),
       cardTitleFontInput: document.getElementById('cardTitleFont'),
@@ -233,7 +232,6 @@
     currentSettings.home_footer_text = refs.homeFooterTextInput?.value.trim() || '';
     currentSettings.home_default_category = refs.homeDefaultCategorySelect?.value || '';
     currentSettings.home_remember_last_category = !!refs.homeRememberLastCategorySwitch?.checked;
-    currentSettings.home_search_engine_enabled = !!refs.searchEngineSwitch?.checked;
     currentSettings.layout_custom_wallpaper = refs.customWallpaperInput?.value.trim() || '';
     currentSettings.layout_enable_bg_blur = !!refs.bgBlurSwitch?.checked;
     currentSettings.layout_bg_blur_intensity = refs.bgBlurIntensityRange?.value || '0';
@@ -382,7 +380,6 @@
     setValue(refs.homeFooterTextInput, currentSettings.home_footer_text || '');
     setValue(refs.homeDefaultCategorySelect, currentSettings.home_default_category || '');
     setChecked(refs.homeRememberLastCategorySwitch, currentSettings.home_remember_last_category);
-    setChecked(refs.searchEngineSwitch, currentSettings.home_search_engine_enabled);
     setChecked(refs.frostedGlassSwitch, currentSettings.layout_enable_frosted_glass);
     setRangeValue(refs.frostedGlassIntensityRange, refs.frostedGlassIntensityValue, currentSettings.layout_frosted_glass_intensity || '15');
     updateToggleContainer(refs.frostedGlassSwitch, 'frostedGlassIntensityContainer');
@@ -446,6 +443,10 @@
     ns.preview?.selectMobileCardStyle?.(currentSettings.mobile_layout_card_style || 'style2');
     ns.preview?.updatePreviewCards?.();
     ns.preview?.updatePreviewWidth?.();
+    // 搜索引擎列表随设置同步刷新
+    if (typeof ns.searchEngines?.render === 'function') {
+      ns.searchEngines.render();
+    }
   }
 
   ns.form = {

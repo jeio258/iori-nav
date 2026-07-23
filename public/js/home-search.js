@@ -11,8 +11,30 @@
 
   Home.setSearchEngine = function(url) {
     currentSearchEngine = url === 'local' ? 'local' : url;
-    const btn = document.querySelector('.search-engine-icon-btn');
-    if (btn) btn.setAttribute('data-engine', currentSearchEngine);
+    const btn = document.querySelector('.search-engine-btn');
+    if (btn) {
+      btn.setAttribute('data-engine', currentSearchEngine);
+      // Update button appearance: icon + label
+      const popup = btn.parentElement.querySelector('.search-engine-popup');
+      if (popup) {
+        const items = popup.querySelectorAll('.search-engine-popup-item');
+        items.forEach(item => {
+          if (item.dataset.engine === currentSearchEngine) {
+            const img = item.querySelector('img');
+            const nameSpan = item.querySelector('span');
+            const btnIcon = btn.querySelector('.search-engine-btn-icon');
+            const btnLabel = btn.querySelector('.search-engine-btn-label');
+            if (btnIcon && img) btnIcon.src = img.src;
+            else if (btnIcon && !img) btnIcon.style.display = 'none';
+            if (btnLabel && nameSpan) btnLabel.textContent = nameSpan.textContent;
+            item.classList.add('active');
+          } else {
+            item.classList.remove('active');
+          }
+        });
+      }
+    }
+    updateSearchEngineUI(currentSearchEngine);
     reapplyLocalSearchFilter();
   };
 
@@ -66,29 +88,28 @@
     }
 
     function updateSearchEngineUI(engine) {
-      const btn = document.querySelector('.search-engine-icon-btn');
-      const currentIcon = btn?.querySelector('.search-engine-current-icon');
+      const btn = document.querySelector('.search-engine-btn');
       const items = document.querySelectorAll('.search-engine-popup-item');
       
       let placeholder = '搜索书签...';
       items.forEach(item => {
         if (item.dataset.engine === engine) {
-          // Update button icon
           const img = item.querySelector('img');
-          if (currentIcon && img) currentIcon.src = img.src;
+          const name = item.querySelector('span')?.textContent;
+          // Update button icon and label
+          if (btn) {
+            const btnIcon = btn.querySelector('.search-engine-btn-icon');
+            const btnLabel = btn.querySelector('.search-engine-btn-label');
+            if (btnIcon && img) { btnIcon.src = img.src; btnIcon.style.display = ''; }
+            else if (btnIcon && !img) btnIcon.style.display = 'none';
+            if (btnLabel && name) btnLabel.textContent = name;
+          }
+          if (name && engine !== 'local') placeholder = name + ' 搜索...';
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
         }
       });
-      if (engine === 'local') {
-        placeholder = '搜索书签...';
-      } else {
-        // Find engine name from popup items
-        items.forEach(item => {
-          if (item.dataset.engine === engine) {
-            const name = item.querySelector('span')?.textContent;
-            if (name) placeholder = name + ' 搜索...';
-          }
-        });
-      }
 
       searchInputs.forEach(input => {
         input.placeholder = placeholder;
