@@ -289,6 +289,7 @@ const TYPE_CONVERTERS = {
     bool: v => v === 'true',
     boolOrOne: v => v === 'true' || v === '1',
     string: v => v,
+    json: v => v,
 };
 
 /**
