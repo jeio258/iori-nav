@@ -2279,19 +2279,17 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
 .search-engine-btn-label {
   display: none;
 }
-/* 搜索输入框左侧留出引擎按钮空间（仅图标） */
-.home-search-field .search-input-target {
-  padding-left: 82px !important;
+/* 搜索输入框左侧留出引擎按钮空间（仅图标），隐藏搜索放大镜 */
+.home-search-field.has-engines .search-input-target {
+  padding-left: 50px !important;
 }
-.home-search-field .home-search-icon {
-  left: 56px !important;
-  z-index: 6;
-  pointer-events: none;
+.home-search-field.has-engines .home-search-icon {
+  display: none !important;
 }
-/* 无外站引擎时隐藏按钮，恢复默认布局 */
+/* 无外站引擎时显示搜索图标，恢复默认布局 */
 .home-search-field:not(.has-engines) .search-engine-btn-wrapper { display: none; }
 .home-search-field:not(.has-engines) .search-input-target { padding-left: 3rem !important; }
-.home-search-field:not(.has-engines) .home-search-icon { left: 1rem !important; }
+.home-search-field:not(.has-engines) .home-search-icon { left: 1rem !important; display: block !important; }
 /* ── Popup ── */
 .search-engine-popup {
   position: absolute;
