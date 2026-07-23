@@ -2281,10 +2281,10 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
 }
 /* 搜索输入框左侧留出引擎按钮空间（仅图标） */
 .home-search-field .search-input-target {
-  padding-left: 58px !important;
+  padding-left: 82px !important;
 }
 .home-search-field .home-search-icon {
-  left: 44px !important;
+  left: 56px !important;
 }
 /* 无外站引擎时隐藏按钮，恢复默认布局 */
 .home-search-field:not(.has-engines) .search-engine-btn-wrapper { display: none; }

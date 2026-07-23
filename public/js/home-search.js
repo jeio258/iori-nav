@@ -77,8 +77,16 @@
 
         if (engine === 'local') {
           // Show search SVG as icon for local
-          if (btnIcon) {
-            btnIcon.style.display = 'none';
+          if (btnIcon && btnIcon.tagName === 'IMG') {
+            // Replace img with SVG
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '2');
+            svg.setAttribute('class', 'search-engine-btn-icon');
+            svg.innerHTML = '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>';
+            btnIcon.replaceWith(svg);
           }
         } else {
           items.forEach(item => {
@@ -86,10 +94,16 @@
               const img = item.querySelector('img');
               const name = item.querySelector('span')?.textContent;
               if (btnIcon && img) {
-                btnIcon.src = img.src;
-                btnIcon.style.display = '';
-              } else if (btnIcon) {
-                btnIcon.style.display = 'none';
+                if (btnIcon.tagName === 'IMG') {
+                  btnIcon.src = img.src;
+                } else {
+                  // Replace SVG with img
+                  const newImg = document.createElement('img');
+                  newImg.src = img.src;
+                  newImg.className = 'search-engine-btn-icon';
+                  newImg.alt = '';
+                  btnIcon.replaceWith(newImg);
+                }
               }
               if (name) placeholder = name + ' 搜索...';
             }
