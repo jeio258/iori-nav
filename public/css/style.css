@@ -2196,10 +2196,10 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
   transition: all 0.2s ease !important;
 }
 .site-card.style-4:hover {
-  background: rgba(255,255,255,0.08) !important;
-  border-color: rgba(255,255,255,0.1) !important;
+  background: transparent !important;
+  border-color: transparent !important;
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.3) !important;
+  box-shadow: none !important;
 }
 .site-card.style-4 .site-card-content,
 .site-card.style-4 .site-card-content a.block,
