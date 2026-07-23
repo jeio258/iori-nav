@@ -279,3 +279,7 @@
       });
   };
 })();
+
+// ESM exports for bundling
+export const { showMessage, showModalMessage, escapeHTML, normalizeUrl, buildCategoryTree, createCascadingDropdown, loadGlobalCategories, categoriesData, categoriesTree } = window;
+

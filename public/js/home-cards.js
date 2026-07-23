@@ -324,3 +324,7 @@
     };
   };
 })();
+
+// ESM exports for bundling
+export const { createCardController } = window.IoriHome || {};
+

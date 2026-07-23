@@ -48,3 +48,7 @@
     init,
   };
 })();
+
+// ESM exports for bundling - admin tabs
+export const { init: initTabs } = window.AdminTabs || {};
+

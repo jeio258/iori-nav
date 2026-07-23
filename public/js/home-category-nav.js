@@ -381,3 +381,7 @@
     restoreLastCategory();
   };
 })();
+
+// ESM exports for bundling
+export const { initCategoryNavigation } = window.IoriHome || {};
+

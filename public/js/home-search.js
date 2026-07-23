@@ -187,3 +187,7 @@
     updateHeading();
   };
 })();
+
+// ESM exports for bundling
+export const { initSearch } = window.IoriHome || {};
+

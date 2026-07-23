@@ -175,3 +175,7 @@
     initThemeToggle();
   };
 })();
+
+// ESM exports for bundling
+export const { initCommonUi } = window.IoriHome || {};
+
