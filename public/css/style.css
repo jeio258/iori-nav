@@ -1,8 +1,12 @@
 /* 自定义滚动条 */
 :root {
-  --card-padding: 1.25rem; /* 20px, default p-5 */
-  --card-radius: 0.75rem;  /* 12px, default rounded-xl */
-  --frosted-glass-blur: 15px; /* Default blur */
+  --card-padding: 1rem; /* 缩小默认内边距 */
+  --card-radius: 0.75rem;
+  --frosted-glass-blur: 15px;
+}
+
+#sitesGrid {
+  gap: 0.5rem !important;
 }
 
 .home-title-block:empty {
