@@ -69,6 +69,7 @@
     'mobile_card_desc_font',
     'mobile_card_desc_size',
     'mobile_card_desc_color',
+    'home_search_engines',
   ];
 
   const MOBILE_FALLBACK_FIELDS = [
