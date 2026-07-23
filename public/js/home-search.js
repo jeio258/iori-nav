@@ -152,23 +152,20 @@
     Home.reapplyLocalSearchFilter = reapplyLocalSearchFilter;
     Home.updateHeading = updateHeading;
 
-    if (engineOptions.length > 0) {
-      currentSearchEngine = localStorage.getItem('search_engine') || 'local';
-      if (currentSearchEngine === 'bing') {
-        currentSearchEngine = 'github';
-        localStorage.setItem('search_engine', currentSearchEngine);
-      }
+    // Init: restore last engine from localStorage, apply to button
+    const savedEngine = localStorage.getItem('search_engine');
+    if (savedEngine) {
+      currentSearchEngine = savedEngine === 'bing' ? 'local' : savedEngine;
+      if (currentSearchEngine === 'local') localStorage.removeItem('search_engine');
       updateSearchEngineUI(currentSearchEngine);
-    } else {
-      localStorage.removeItem('search_engine');
     }
 
-    engineOptions.forEach(option => {
-      option.addEventListener('click', () => {
-        currentSearchEngine = option.dataset.engine;
+    // Bind popup item clicks (in addition to inline onclick)
+    document.querySelectorAll('.search-engine-popup-item').forEach(item => {
+      item.addEventListener('click', () => {
+        currentSearchEngine = item.dataset.engine;
         localStorage.setItem('search_engine', currentSearchEngine);
         updateSearchEngineUI(currentSearchEngine);
-
         searchInputs.forEach(input => input.focus());
       });
     });
