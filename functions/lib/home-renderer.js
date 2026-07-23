@@ -135,7 +135,7 @@ function buildSearchBar(ctx, themeClasses) {
       <div class="search-engine-popup hidden">
         ${engines.map(e => `
         <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}">
-          ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="">` : `<span>${escapeHTML((e.name||'?')[0])}</span>`}
+          ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="" onerror="this.style.display='none'">` : `<span class="search-engine-popup-char">${escapeHTML((e.name||'?')[0])}</span>`}
           <span>${escapeHTML(e.name)}</span>
         </button>`).join('')}
       </div>
