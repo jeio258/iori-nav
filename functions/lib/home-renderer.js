@@ -127,14 +127,14 @@ function buildSearchBar(ctx, themeClasses) {
     const defaultEngine = engines[0];
     engineBtnHtml = `
     <div class="search-engine-btn-wrapper">
-      <button class="search-engine-btn" onclick="event.stopPropagation();this.parentElement.querySelector('.search-engine-popup').classList.toggle('hidden')" aria-label="切换搜索引擎" data-engine="${escapeHTML(defaultEngine.url)}">
+      <button class="search-engine-btn" onclick="event.stopPropagation();this.parentElement.querySelector('.search-engine-popup').classList.toggle('hidden')" aria-label="切换搜索引擎">
         ${defaultEngine.icon ? `<img src="${escapeHTML(defaultEngine.icon)}" class="search-engine-btn-icon" alt="">` : ''}
         <span class="search-engine-btn-label">${escapeHTML(defaultEngine.name)}</span>
         <svg class="search-engine-btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
       </button>
       <div class="search-engine-popup hidden">
         ${engines.map(e => `
-        <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}" onclick="document.querySelector('.search-engine-btn').setAttribute('data-engine','${escapeHTML(e.url)}');this.closest('.search-engine-popup').classList.add('hidden');IoriHome?.setSearchEngine?.('${escapeHTML(e.url)}')">
+        <button class="search-engine-popup-item" data-engine="${escapeHTML(e.url)}">
           ${e.icon ? `<img src="${escapeHTML(e.icon)}" alt="">` : `<span>${escapeHTML((e.name||'?')[0])}</span>`}
           <span>${escapeHTML(e.name)}</span>
         </button>`).join('')}

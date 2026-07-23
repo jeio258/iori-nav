@@ -11,29 +11,7 @@
 
   Home.setSearchEngine = function(url) {
     currentSearchEngine = url === 'local' ? 'local' : url;
-    const btn = document.querySelector('.search-engine-btn');
-    if (btn) {
-      btn.setAttribute('data-engine', currentSearchEngine);
-      // Update button appearance: icon + label
-      const popup = btn.parentElement.querySelector('.search-engine-popup');
-      if (popup) {
-        const items = popup.querySelectorAll('.search-engine-popup-item');
-        items.forEach(item => {
-          if (item.dataset.engine === currentSearchEngine) {
-            const img = item.querySelector('img');
-            const nameSpan = item.querySelector('span');
-            const btnIcon = btn.querySelector('.search-engine-btn-icon');
-            const btnLabel = btn.querySelector('.search-engine-btn-label');
-            if (btnIcon && img) btnIcon.src = img.src;
-            else if (btnIcon && !img) btnIcon.style.display = 'none';
-            if (btnLabel && nameSpan) btnLabel.textContent = nameSpan.textContent;
-            item.classList.add('active');
-          } else {
-            item.classList.remove('active');
-          }
-        });
-      }
-    }
+    localStorage.setItem('search_engine', currentSearchEngine);
     updateSearchEngineUI(currentSearchEngine);
     reapplyLocalSearchFilter();
   };
@@ -90,27 +68,40 @@
     function updateSearchEngineUI(engine) {
       const btn = document.querySelector('.search-engine-btn');
       const items = document.querySelectorAll('.search-engine-popup-item');
+      const field = document.querySelector('.home-search-field');
       
       let placeholder = '搜索书签...';
-      items.forEach(item => {
-        if (item.dataset.engine === engine) {
-          const img = item.querySelector('img');
-          const name = item.querySelector('span')?.textContent;
-          // Update button icon and label
-          if (btn) {
-            const btnIcon = btn.querySelector('.search-engine-btn-icon');
-            const btnLabel = btn.querySelector('.search-engine-btn-label');
-            if (btnIcon && img) { btnIcon.src = img.src; btnIcon.style.display = ''; }
-            else if (btnIcon && !img) btnIcon.style.display = 'none';
-            if (btnLabel && name) btnLabel.textContent = name;
-          }
-          if (name && engine !== 'local') placeholder = name + ' 搜索...';
-          item.classList.add('active');
+
+      // Update button icon + label from popup item
+      if (btn) {
+        const btnIcon = btn.querySelector('.search-engine-btn-icon');
+        const btnLabel = btn.querySelector('.search-engine-btn-label');
+
+        if (engine === 'local') {
+          // Show "站内" in button
+          if (btnIcon) btnIcon.style.display = 'none';
+          if (btnLabel) btnLabel.textContent = '站内';
         } else {
-          item.classList.remove('active');
+          // Find matching popup item
+          items.forEach(item => {
+            if (item.dataset.engine === engine) {
+              const img = item.querySelector('img');
+              const name = item.querySelector('span')?.textContent;
+              if (btnIcon && img) { btnIcon.src = img.src; btnIcon.style.display = ''; }
+              else if (btnIcon) btnIcon.style.display = 'none';
+              if (btnLabel && name) btnLabel.textContent = name;
+              if (name) placeholder = name + ' 搜索...';
+            }
+          });
         }
+      }
+
+      // Mark active item in popup
+      items.forEach(item => {
+        item.classList.toggle('active', item.dataset.engine === engine);
       });
 
+      // Update input placeholder
       searchInputs.forEach(input => {
         input.placeholder = placeholder;
         if (engine === 'local' && input.value.trim()) {
@@ -152,22 +143,31 @@
     Home.reapplyLocalSearchFilter = reapplyLocalSearchFilter;
     Home.updateHeading = updateHeading;
 
-    // Init: restore last engine from localStorage, apply to button
+    // Init: restore last engine from localStorage
     const savedEngine = localStorage.getItem('search_engine');
-    if (savedEngine) {
-      currentSearchEngine = savedEngine === 'bing' ? 'local' : savedEngine;
-      if (currentSearchEngine === 'local') localStorage.removeItem('search_engine');
+    if (savedEngine && savedEngine !== 'local') {
+      currentSearchEngine = savedEngine;
       updateSearchEngineUI(currentSearchEngine);
     }
 
-    // Bind popup item clicks (in addition to inline onclick)
+    // Popup item clicks: update engine + close popup
     document.querySelectorAll('.search-engine-popup-item').forEach(item => {
-      item.addEventListener('click', () => {
-        currentSearchEngine = item.dataset.engine;
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const engineUrl = item.dataset.engine;
+        currentSearchEngine = engineUrl === 'local' ? 'local' : engineUrl;
         localStorage.setItem('search_engine', currentSearchEngine);
         updateSearchEngineUI(currentSearchEngine);
+        item.closest('.search-engine-popup')?.classList.add('hidden');
         searchInputs.forEach(input => input.focus());
       });
+    });
+
+    // Close popup when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.search-engine-btn-wrapper')) {
+        document.querySelectorAll('.search-engine-popup').forEach(p => p.classList.add('hidden'));
+      }
     });
 
     searchInputs.forEach(input => {
