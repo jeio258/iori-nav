@@ -176,6 +176,7 @@ function clearStaleCookies(response, request) {
 // ─── 主入口 ──────────────────────────────────────────────
 
 export async function onRequest(context) {
+  try {
   const { request, env } = context;
   const url = new URL(request.url);
   const isHomePage = url.pathname === '/' && !url.search;
@@ -309,4 +310,7 @@ export async function onRequest(context) {
   }
 
   return response;
+  } catch (e) {
+    return new Response(`Error: ${e.message}\n\nStack: ${e.stack}`, { status: 500, headers: { 'Content-Type': 'text/plain; charset=utf-8' } });
+  }
 }
