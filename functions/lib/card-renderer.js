@@ -88,3 +88,13 @@ export function renderEmptyState(categoryCount, hideAdmin) {
         </a>` : ''}
     </div>`;
 }
+
+/**
+ * 统一入口：渲染所有站点卡片
+ * @param {Array} sites - 站点数据数组
+ * @param {object} settings - 解析后的设置对象
+ * @returns {string} 站点卡片 HTML 字符串
+ */
+export function renderAllCards(sites, settings) {
+  return renderSiteCards(sites, settings);
+}
