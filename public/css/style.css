@@ -2285,6 +2285,8 @@ git add -A && git commit -m "fix: add style4 validation in settings-parser and i
 }
 .home-search-field .home-search-icon {
   left: 56px !important;
+  z-index: 6;
+  pointer-events: none;
 }
 /* 无外站引擎时隐藏按钮，恢复默认布局 */
 .home-search-field:not(.has-engines) .search-engine-btn-wrapper { display: none; }
