@@ -125,7 +125,7 @@ function buildSearchBar(ctx, themeClasses) {
   return `
     ${engineOptionsHtml}
     <div class="home-search-field relative">
-      <input type="search" placeholder="搜索书签..." class="search-input-target w-full pl-12 pr-4 py-3.5 rounded-2xl transition-all shadow-lg outline-none focus:outline-none focus:ring-2 ${themeClasses.searchInputClass}" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="search" enterkeyhint="search" aria-label="搜索书签" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
+      <input id="headerSearchInput" type="search" placeholder="搜索书签..." class="search-input-target w-full pl-12 pr-4 py-3.5 rounded-2xl transition-all shadow-lg outline-none focus:outline-none focus:ring-2 ${themeClasses.searchInputClass}" autocomplete="new-password" autocapitalize="none" autocorrect="off" spellcheck="false" inputmode="search" enterkeyhint="search" aria-label="搜索书签" data-lpignore="true" data-1p-ignore="true" data-bwignore="true" data-form-type="other">
       <svg xmlns="http://www.w3.org/2000/svg" class="home-search-icon h-6 w-6 absolute left-4 top-3.5 ${themeClasses.searchIconClass}" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
     </div>`;
 }
@@ -162,9 +162,10 @@ function buildSearchEngineSwitcher(engines) {
 }
 
 function buildCategoryNav(ctx) {
-  const { settings, rootCategories, currentCatalogName } = ctx;
+  const { settings, rootCategories, currentCatalogName, shell } = ctx;
   const categoryFlow = settings.home_category_flow === 'multi_line' ? 'multi_line' : 'single_line';
   const catalogExists = ctx.catalogExists;
+  const isTop = shell.categoryPosition === 'top';
   const allLinkClass = catalogExists ? 'inactive' : 'active';
   const allLinkActiveMarker = catalogExists ? '' : 'nav-item-active';
 
@@ -187,7 +188,7 @@ function buildCategoryNav(ctx) {
           </div>`;
 
   return `
-      <div class="horizontal-category-nav-shell relative mx-auto">
+      <div class="horizontal-category-nav-shell${isTop ? ' is-top' : ''} relative mx-auto">
         <div id="horizontalCategoryNav" class="flex ${wrapClass} ${justifyClass} items-center gap-3 overflow-visible ${flowClass} transition-all duration-300">
           ${horizontalMarkup}
           ${moreHtml}

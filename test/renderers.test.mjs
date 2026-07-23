@@ -272,11 +272,11 @@ test('style three search focus suppresses the transient Tailwind ring', () => {
 
 test('category nav keeps overflow visible so dropdowns are not clipped', () => {
   const homeCss = readFileSync('public/css/style.css', 'utf8');
-  const indexSource = readFileSync('functions/index.js', 'utf8');
+  const rendererSource = readFileSync('functions/lib/home-renderer.js', 'utf8');
   const navSource = readFileSync('public/js/home-category-nav.js', 'utf8');
 
   assert.match(homeCss, /#horizontalCategoryNav[\s\S]*?overflow:\s*visible\s*!important/);
-  assert.match(indexSource, /horizontalCategoryNavOverflowClass = 'overflow-visible'/);
+  assert.match(rendererSource, /overflow-visible/);
   // 打开「更多」时跳过 checkOverflow，避免 reset 拆掉弹出层
   assert.match(navSource, /dropdown\.classList\.contains\('hidden'\)/);
 });
@@ -284,7 +284,7 @@ test('category nav keeps overflow visible so dropdowns are not clipped', () => {
 test('horizontal category overflow matches preview width-based collapse', () => {
   const source = readFileSync('public/js/home-category-nav.js', 'utf8');
   const homeCss = readFileSync('public/css/style.css', 'utf8');
-  const indexSource = readFileSync('functions/index.js', 'utf8');
+  const rendererSource = readFileSync('functions/lib/home-renderer.js', 'utf8');
 
   // 与后台预览一致：按可用宽度折叠，单行 nowrap
   assert.match(source, /measureItemsWidth/);
@@ -303,9 +303,9 @@ test('horizontal category overflow matches preview width-based collapse', () => 
   assert.match(homeCss, /\.horizontal-category-nav-shell\s*\{[^}]*width:\s*min\(100%, 64rem\)/);
   assert.match(homeCss, /\.nav-btn\s*\{[^}]*min-width:\s*calc\(4em \+ 2rem\)/);
   assert.match(homeCss, /body\.desktop-page-style3[\s\S]*?\.nav-btn[\s\S]*?min-width:\s*calc\(4em \+ 2rem\)/);
-  assert.match(indexSource, /is-single-line/);
-  assert.match(indexSource, /flex-nowrap/);
-  assert.doesNotMatch(indexSource, /max-height: 60px/);
+  assert.match(rendererSource, /is-single-line/);
+  assert.match(rendererSource, /flex-nowrap/);
+  assert.doesNotMatch(rendererSource, /max-height: 60px/);
 });
 
 test('style three top navigation keeps the single-line overflow menu available', () => {
