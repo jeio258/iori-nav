@@ -193,13 +193,8 @@
           e.preventDefault();
           const query = this.value.trim();
           if (query) {
-            let url = '';
-            switch (currentSearchEngine) {
-              case 'google': url = `https://www.google.com/search?q=${encodeURIComponent(query)}`; break;
-              case 'baidu': url = `https://www.baidu.com/s?wd=${encodeURIComponent(query)}`; break;
-              case 'github': url = `https://github.com/search?q=${encodeURIComponent(query)}`; break;
-            }
-            if (url) window.open(url, '_blank');
+            const url = currentSearchEngine.replace(/%s/g, encodeURIComponent(query));
+            window.open(url, '_blank');
           }
         }
       });

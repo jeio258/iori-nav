@@ -276,7 +276,8 @@
   background: #f8f9fa !important;
 }
 .search-engine-row .delete-engine-btn,
-.search-engine-row .set-default-btn {
+.search-engine-row .set-default-btn,
+.search-engine-row .edit-engine-btn {
   background: none;
   border: none;
   cursor: pointer;
