@@ -17,7 +17,7 @@
   <meta name="twitter:description" content="{{SITE_DESCRIPTION}}">
   <meta name="twitter:image" content="{{OG_IMAGE_URL}}">
   <link rel="icon" href="/favicon.svg?v=148aafdf" type="image/svg+xml">
-  <link rel="stylesheet" href="/css/style.css?v=a7b71027">
+  <link rel="stylesheet" href="/css/style.css?v=5865114e">
   <script>
     // Init Theme ASAP to prevent FOUC
     if (localStorage.getItem('theme') === 'dark') {
@@ -42,7 +42,6 @@
       <path d="M9 5l7 7-7 7"/>
     </symbol>
   </svg>
-  <input type="checkbox" id="sidebar-toggle" class="hidden">
   
   <!-- 左上角操作区 (移动端导航按钮) -->
   {{LEFT_TOP_ACTION}}
@@ -50,31 +49,17 @@
   <!-- 右上角操作区 (主题切换, 后台入口) -->
   {{RIGHT_TOP_ACTION}}
   
-  <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 mobile-overlay lg:hidden"></div>
-  
-  <!-- 桌面侧边栏开关按钮 -->
-  <div class="fixed top-4 left-4 z-50 hidden lg:block {{SIDEBAR_TOGGLE_CLASS}}">
-    <label for="sidebar-toggle" class="p-2 rounded-lg bg-white shadow-md hover:bg-gray-100 inline-block cursor-pointer">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </label>
-  </div>
+  <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 mobile-overlay"></div>
   
   <!-- 侧边栏 -->
-  <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-md border-r border-primary-100/60 dark:border-gray-800 z-50 overflow-y-auto mobile-sidebar lg:transform-none transition-all duration-300 {{SIDEBAR_CLASS}}">
+  <aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 shadow-md border-r border-primary-100/60 dark:border-gray-800 z-50 overflow-y-auto transition-all duration-300 {{SIDEBAR_CLASS}}">
     <div class="p-6">
       <div class="flex items-center justify-end mb-8">
-        <button id="closeSidebar" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden">
+        <button id="closeSidebar" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
-        <label for="sidebar-toggle" class="p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 hidden lg:block cursor-pointer">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </label>
       </div>
       
       <div>

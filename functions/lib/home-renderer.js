@@ -384,7 +384,7 @@ export function buildActionsHtml(ctx) {
     </button>`;
 
   let adminIconHtml = '';
-  if (!settings.home_hide_admin && isHorizontal) {
+  if (!settings.home_hide_admin) {
     adminIconHtml = `
         <a href="/admin" target="_blank" class="top-action-icon admin-action-icon" title="后台管理">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M7 18a5 5 0 0 1 10 0"/></svg>
@@ -393,17 +393,17 @@ export function buildActionsHtml(ctx) {
 
   const topRightActionsHtml = `<div class="fixed top-4 right-4 z-50 flex items-center gap-3">${themeIconHtml}${adminIconHtml}</div>`;
 
-  const mobileToggleVisibilityClass = isHorizontal ? 'min-[550px]:hidden' : 'lg:hidden';
+  const mobileToggleVisibilityClass = '';
   const leftTopActionHtml = `
-    <div class="fixed top-4 left-4 z-50 ${mobileToggleVisibilityClass}">
+    <div class="fixed top-4 left-4 z-50">
       <button id="sidebarToggle" class="p-2 rounded-lg bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary-500 dark:text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
       </button>
     </div>`;
 
-  const sidebarClass = isHorizontal ? 'min-[550px]:hidden' : '';
-  const mainClass = isHorizontal ? '' : 'lg:ml-64';
-  const sidebarToggleClass = isHorizontal ? '!hidden' : '';
+  const sidebarClass = '-translate-x-full';
+  const mainClass = '';
+  const sidebarToggleClass = '';
 
   return {
     topRightActionsHtml,
