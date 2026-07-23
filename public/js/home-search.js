@@ -68,28 +68,29 @@
     function updateSearchEngineUI(engine) {
       const btn = document.querySelector('.search-engine-btn');
       const items = document.querySelectorAll('.search-engine-popup-item');
-      const field = document.querySelector('.home-search-field');
       
       let placeholder = '搜索书签...';
 
-      // Update button icon + label from popup item
+      // Update button icon from popup item
       if (btn) {
         const btnIcon = btn.querySelector('.search-engine-btn-icon');
-        const btnLabel = btn.querySelector('.search-engine-btn-label');
 
         if (engine === 'local') {
-          // Show "站内" in button
-          if (btnIcon) btnIcon.style.display = 'none';
-          if (btnLabel) btnLabel.textContent = '站内';
+          // Show search SVG as icon for local
+          if (btnIcon) {
+            btnIcon.style.display = 'none';
+          }
         } else {
-          // Find matching popup item
           items.forEach(item => {
             if (item.dataset.engine === engine) {
               const img = item.querySelector('img');
               const name = item.querySelector('span')?.textContent;
-              if (btnIcon && img) { btnIcon.src = img.src; btnIcon.style.display = ''; }
-              else if (btnIcon) btnIcon.style.display = 'none';
-              if (btnLabel && name) btnLabel.textContent = name;
+              if (btnIcon && img) {
+                btnIcon.src = img.src;
+                btnIcon.style.display = '';
+              } else if (btnIcon) {
+                btnIcon.style.display = 'none';
+              }
               if (name) placeholder = name + ' 搜索...';
             }
           });
