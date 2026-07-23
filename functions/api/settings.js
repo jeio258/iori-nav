@@ -5,7 +5,7 @@ import { sanitizeUrl } from '../lib/utils';
 
 const LAYOUT_SETTING_KEYS = new Set(getSettingsKeys());
 const AI_SETTING_KEYS = new Set(['provider', 'apiKey', 'baseUrl', 'model']);
-const IGNORED_SETTING_KEYS = new Set(['has_api_key', 'debug_api_key_info']);
+const IGNORED_SETTING_KEYS = new Set(['has_api_key', 'debug_api_key_info', 'home_search_engine_enabled']);
 const ALLOWED_PROVIDERS = new Set(['workers-ai', 'gemini', 'openai']);
 
 function normalizeAiSettingValue(key, value) {
