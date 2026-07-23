@@ -289,5 +289,14 @@
 }
 #addEngineModal {
   backdrop-filter: blur(4px);
+  justify-content: flex-end !important;
+}
+#addEngineModal > div {
+  margin-right: 20px;
+  animation: slideInRight 0.2s ease-out;
+}
+@keyframes slideInRight {
+  from { transform: translateX(40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
