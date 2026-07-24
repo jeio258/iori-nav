@@ -226,9 +226,8 @@ export async function onRequest(context) {
     ? allSites.filter(site => targetCategoryIds.includes(site.catelog_id))
     : allSites;
 
-  // 7. 构建 shell（强制侧边栏布局，不在搜索框下方显示分类）
+  // 7. 构建 shell
   const shell = buildPageShell(settings);
-  shell.categoryPosition = 'left';
   const themeClasses = computeThemeClasses(shell.isCustomWallpaper);
 
   // 8. 构建 ctx

@@ -138,6 +138,37 @@ function isEmptyOptionalValue(text) {
     return normalized === '' || normalized === 'undefined' || normalized === 'null';
 }
 
+// ── 声明式校验规则 ──────────────────────────────────────
+
+// 值 → 允许列表的枚举校验
+const ENUM_VALIDATORS = {
+    layout_grid_cols: ['4', '5', '6', '7'],
+    mobile_layout_grid_cols: ['1', '2', '3'],
+    layout_menu_layout: ['horizontal', 'vertical'],
+    home_category_position: ['below_search', 'above_search', 'left', 'top'],
+    home_category_flow: ['single_line', 'multi_line'],
+    layout_card_style: ['style1', 'style2', 'style3', 'style4'],
+    mobile_layout_card_style: ['style1', 'style2', 'style3', 'style4'],
+    layout_card_animation: ['radial', 'slideUp', 'fadeIn', 'slideLeft', 'slideRight', 'convergeIn', 'flipIn', 'random'],
+    mobile_layout_card_animation: ['radial', 'slideUp', 'fadeIn', 'slideLeft', 'slideRight', 'convergeIn', 'flipIn', 'random'],
+    wallpaper_source: ['bing', '360'],
+    bing_country: ['', 'spotlight'],
+};
+
+// 值 → 重映射（如 above_description → top）
+const VALUE_REMAPS = {
+    home_category_position: { above_description: 'top' },
+};
+
+// 整数范围校验：[min, max, fallback]
+const INTEGER_RANGE_VALIDATORS = {
+    layout_frosted_glass_intensity: [0, 50, '15'],
+    mobile_layout_frosted_glass_intensity: [0, 50, '15'],
+    layout_bg_blur_intensity: [0, 50, '0'],
+    layout_card_border_radius: [0, 30, '12'],
+    mobile_layout_card_border_radius: [0, 30, '12'],
+};
+
 /**
  * 校验并归一化可写入 settings 表的公开设置值
  * @returns {{ok: true, value: string} | {ok: false, message: string}}
@@ -158,22 +189,21 @@ export function normalizeSettingValueForStorage(key, value) {
 
     const text = String(value ?? '').trim();
 
+    // 样式尺寸 / 颜色 / 字体 / URL 通过 key 集合匹配
     if (STYLE_SIZE_KEYS.has(key)) {
         if (isEmptyOptionalValue(text)) return { ok: true, value: '' };
         const safeSize = sanitizeStyleSize(text);
-        if (!safeSize) {
-            return { ok: false, message: `Invalid font size for ${key}` };
-        }
-        return { ok: true, value: safeSize };
+        return safeSize
+            ? { ok: true, value: safeSize }
+            : { ok: false, message: `Invalid font size for ${key}` };
     }
 
     if (STYLE_COLOR_KEYS.has(key)) {
         if (isEmptyOptionalValue(text)) return { ok: true, value: '' };
         const safeColor = sanitizeStyleColor(text);
-        if (!safeColor) {
-            return { ok: false, message: `Invalid color value for ${key}` };
-        }
-        return { ok: true, value: safeColor };
+        return safeColor
+            ? { ok: true, value: safeColor }
+            : { ok: false, message: `Invalid color value for ${key}` };
     }
 
     if (FONT_KEYS.has(key)) {
@@ -187,85 +217,31 @@ export function normalizeSettingValueForStorage(key, value) {
     if (URL_KEYS.has(key)) {
         if (isEmptyOptionalValue(text)) return { ok: true, value: '' };
         const safeUrl = sanitizeUrl(text);
-        if (!safeUrl) {
-            return { ok: false, message: `Invalid URL for ${key}` };
+        return safeUrl
+            ? { ok: true, value: safeUrl }
+            : { ok: false, message: `Invalid URL for ${key}` };
+    }
+
+    // 声明式枚举校验
+    if (key in ENUM_VALIDATORS) {
+        // 先检查重映射
+        if (VALUE_REMAPS[key] && text in VALUE_REMAPS[key]) {
+            return { ok: true, value: VALUE_REMAPS[key][text] };
         }
-        return { ok: true, value: safeUrl };
+        if (!ENUM_VALIDATORS[key].includes(text)) {
+            return { ok: false, message: `Invalid ${key}` };
+        }
+        return { ok: true, value: text };
     }
 
-    if (key === 'layout_grid_cols' && !['4', '5', '6', '7'].includes(text)) {
-        return { ok: false, message: 'Invalid layout_grid_cols' };
-    }
-
-    if (key === 'mobile_layout_grid_cols' && !['1', '2', '3'].includes(text)) {
-        return { ok: false, message: 'Invalid mobile_layout_grid_cols' };
-    }
-
-    if (key === 'layout_menu_layout' && !['horizontal', 'vertical'].includes(text)) {
-        return { ok: false, message: 'Invalid layout_menu_layout' };
-    }
-
-    if (key === 'home_category_position' && text === 'above_description') {
-        return { ok: true, value: 'top' };
-    }
-
-    if (key === 'home_category_position' && !['below_search', 'above_search', 'left', 'top'].includes(text)) {
-        return { ok: false, message: 'Invalid home_category_position' };
-    }
-
-    if (key === 'home_category_flow' && !['single_line', 'multi_line'].includes(text)) {
-        return { ok: false, message: 'Invalid home_category_flow' };
-    }
-
-    if (key === 'layout_card_style' && !['style1', 'style2', 'style3', 'style4'].includes(text)) {
-        return { ok: false, message: 'Invalid layout_card_style' };
-    }
-
-    if (key === 'mobile_layout_card_style' && !['style1', 'style2', 'style3', 'style4'].includes(text)) {
-        return { ok: false, message: 'Invalid mobile_layout_card_style' };
-    }
-
-    if (key === 'layout_card_animation' && !['radial', 'slideUp', 'fadeIn', 'slideLeft', 'slideRight', 'convergeIn', 'flipIn', 'random'].includes(text)) {
-        return { ok: false, message: 'Invalid layout_card_animation' };
-    }
-
-    if (key === 'mobile_layout_card_animation' && !['radial', 'slideUp', 'fadeIn', 'slideLeft', 'slideRight', 'convergeIn', 'flipIn', 'random'].includes(text)) {
-        return { ok: false, message: 'Invalid mobile_layout_card_animation' };
-    }
-
-    if (key === 'wallpaper_source' && !['bing', '360'].includes(text)) {
-        return { ok: false, message: 'Invalid wallpaper_source' };
-    }
-
-    if (key === 'bing_country' && !['', 'spotlight'].includes(text)) {
-        return { ok: false, message: 'Invalid bing_country' };
-    }
-
-    if (key === 'layout_frosted_glass_intensity') {
-        const normalized = normalizeIntegerRange(text, 0, 50, '15');
+    // 声明式整数范围校验
+    if (key in INTEGER_RANGE_VALIDATORS) {
+        const [min, max, fallback] = INTEGER_RANGE_VALIDATORS[key];
+        const normalized = normalizeIntegerRange(text, min, max, fallback);
         return normalized === null ? { ok: false, message: `Invalid ${key}` } : { ok: true, value: normalized };
     }
 
-    if (key === 'mobile_layout_frosted_glass_intensity') {
-        const normalized = normalizeIntegerRange(text, 0, 50, '15');
-        return normalized === null ? { ok: false, message: `Invalid ${key}` } : { ok: true, value: normalized };
-    }
-
-    if (key === 'layout_bg_blur_intensity') {
-        const normalized = normalizeIntegerRange(text, 0, 50, '0');
-        return normalized === null ? { ok: false, message: `Invalid ${key}` } : { ok: true, value: normalized };
-    }
-
-    if (key === 'layout_card_border_radius') {
-        const normalized = normalizeIntegerRange(text, 0, 30, '12');
-        return normalized === null ? { ok: false, message: `Invalid ${key}` } : { ok: true, value: normalized };
-    }
-
-    if (key === 'mobile_layout_card_border_radius') {
-        const normalized = normalizeIntegerRange(text, 0, 30, '12');
-        return normalized === null ? { ok: false, message: `Invalid ${key}` } : { ok: true, value: normalized };
-    }
-
+    // 特殊校验：wallpaper_cid_360
     if (key === 'wallpaper_cid_360' && text && !/^\d{1,8}$/.test(text)) {
         return { ok: false, message: 'Invalid wallpaper_cid_360' };
     }

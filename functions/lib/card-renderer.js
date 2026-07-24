@@ -41,8 +41,8 @@ export function renderSiteCards(sites, settings) {
             <div class="flex items-start">
               <div class="${config.siteIconClass}">
                 ${card.logoUrlHtml
-        ? `<img src="${card.logoUrlHtml}" alt="${card.nameHtml}" width="40" height="40" class="${config.logoClass}" ${imgLoadingAttrs}>`
-        : `<div class="w-10 h-10 rounded-lg bg-primary-600 flex items-center justify-center text-white font-semibold text-lg shadow-inner">${card.cardInitialHtml}</div>`
+        ? `<img src="${card.logoUrlHtml}" alt="${card.nameHtml}" width="48" height="48" class="${config.logoClass}" ${imgLoadingAttrs}>`
+        : `<div class="w-12 h-12 rounded-lg bg-primary-600 flex items-center justify-center text-white font-semibold text-lg shadow-inner">${card.cardInitialHtml}</div>`
       }
               </div>
               <div class="flex-1 min-w-0">

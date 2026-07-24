@@ -1,9 +1,9 @@
 // functions/lib/wallpaper-fetcher.js
-// 从外部 API 获取随机壁纸 URL
+// 从外部 API 获取随机壁纸 URL（被 SSR 和 API endpoint 共用）
 
-const FETCH_TIMEOUT_MS = 8000;
+export const FETCH_TIMEOUT_MS = 8000;
 
-function fetchWithTimeout(url) {
+export function fetchWithTimeout(url) {
     return fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
 }
 
@@ -29,7 +29,13 @@ export async function fetchRandomWallpaper({ wallpaperSource, wallpaperCid360, b
     }
 }
 
-async function fetch360Wallpaper(cid, currentIndex) {
+/**
+ * 从 360 壁纸获取单张壁纸 URL
+ * @param {string} cid - 分类 ID
+ * @param {number} currentIndex - 当前索引
+ * @returns {Promise<{url: string, nextIndex: number} | null>}
+ */
+export async function fetch360Wallpaper(cid, currentIndex) {
     const apiUrl = `http://cdn.apc.360.cn/index.php?c=WallPaper&a=getAppsByCategory&from=360chrome&cid=${cid}&start=0&count=8`;
     const res = await fetchWithTimeout(apiUrl);
     if (!res.ok) return null;
@@ -47,7 +53,13 @@ async function fetch360Wallpaper(cid, currentIndex) {
     };
 }
 
-async function fetchBingWallpaper(bingCountry, currentIndex) {
+/**
+ * 从 Bing 壁纸获取单张壁纸 URL
+ * @param {string} bingCountry - 国家/spotlight
+ * @param {number} currentIndex - 当前索引
+ * @returns {Promise<{url: string, nextIndex: number} | null>}
+ */
+export async function fetchBingWallpaper(bingCountry, currentIndex) {
     const bingUrl = bingCountry === 'spotlight'
         ? 'https://peapix.com/spotlight/feed?n=7'
         : `https://peapix.com/bing/feed?n=7&country=${encodeURIComponent(bingCountry)}`;

@@ -1,13 +1,9 @@
 // functions/api/wallpaper.js
 
 import { jsonResponse, errorResponse } from '../_middleware';
+import { fetchWithTimeout, fetch360Wallpaper, fetchBingWallpaper } from '../lib/wallpaper-fetcher';
 
 const API_360_BASE = 'http://cdn.apc.360.cn/index.php';
-const FETCH_TIMEOUT_MS = 8000;
-
-function fetchWithTimeout(url) {
-  return fetch(url, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
-}
 
 export async function onRequestGet(context) {
   const { request } = context;
@@ -42,43 +38,16 @@ export async function onRequestGet(context) {
     }
 
     // 默认行为：获取单张壁纸（首页 SSR 和客户端随机壁纸使用）
-    let targetUrl = '';
-    let nextIndex = 0;
+    let result = null;
 
     if (source === '360') {
-      const apiUrl = `${API_360_BASE}?c=WallPaper&a=getAppsByCategory&from=360chrome&cid=${cid}&start=0&count=8`;
-      const res = await fetchWithTimeout(apiUrl);
-      if (res.ok) {
-        const json = await res.json();
-        if (json.errno === "0" && json.data && json.data.length > 0) {
-          nextIndex = (currentIndex + 1) % json.data.length;
-          const targetItem = json.data[nextIndex];
-          if (targetItem.url) {
-            targetUrl = targetItem.url.replace('http://', 'https://');
-          }
-        }
-      }
+      result = await fetch360Wallpaper(cid, currentIndex);
     } else {
-      // Bing 壁纸
-      let bingUrl = '';
-      if (country === 'spotlight') {
-        bingUrl = 'https://peapix.com/spotlight/feed?n=7';
-      } else {
-        bingUrl = `https://peapix.com/bing/feed?n=7&country=${encodeURIComponent(country)}`;
-      }
-      const res = await fetchWithTimeout(bingUrl);
-      if (res.ok) {
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          nextIndex = (currentIndex + 1) % data.length;
-          const targetItem = data[nextIndex];
-          targetUrl = targetItem.fullUrl || targetItem.url;
-        }
-      }
+      result = await fetchBingWallpaper(country, currentIndex);
     }
 
-    if (targetUrl) {
-      return jsonResponse({ code: 200, data: { url: targetUrl, index: nextIndex } });
+    if (result && result.url) {
+      return jsonResponse({ code: 200, data: { url: result.url, index: result.nextIndex } });
     } else {
       return errorResponse('Failed to fetch wallpaper', 500);
     }

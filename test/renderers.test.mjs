@@ -300,7 +300,7 @@ test('horizontal category overflow matches preview width-based collapse', () => 
   assert.match(source, /restoreCategoryFromDropdown/);
   assert.match(source, /document\.fonts/);
   assert.match(source, /ResizeObserver/);
-  assert.match(homeCss, /\.horizontal-category-nav-shell\s*\{[^}]*width:\s*min\(100%, 64rem\)/);
+  assert.match(homeCss, /\.horizontal-category-nav-shell\s*\{[^}]*display:\s*none\s*!important/);
   assert.match(homeCss, /\.nav-btn\s*\{[^}]*min-width:\s*calc\(4em \+ 2rem\)/);
   assert.match(homeCss, /body\.desktop-page-style3[\s\S]*?\.nav-btn[\s\S]*?min-width:\s*calc\(4em \+ 2rem\)/);
   assert.match(rendererSource, /is-single-line/);
@@ -373,11 +373,12 @@ test('home and admin preview use a sticky footer layout', () => {
   assert.match(previewCardCss, /\.live-preview-footer \{[\s\S]*?margin-top: auto;/);
 });
 
-test('home search keeps the original engine behavior', () => {
+test('home search uses URL-based engine switching with no hardcoded engine URLs', () => {
   const source = readFileSync('public/js/home-search.js', 'utf8');
 
-  assert.match(source, /currentSearchEngine === 'bing'/);
-  assert.match(source, /currentSearchEngine = 'github'/);
+  assert.match(source, /currentSearchEngine !== 'local'/);
+  assert.match(source, /currentSearchEngine = (?:url|engineUrl) === 'local'/);
+  assert.match(source, /currentSearchEngine\.replace\(.*%s/);
   assert.doesNotMatch(source, /www\.bing\.com\/search/);
 });
 

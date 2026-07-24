@@ -2,16 +2,7 @@
 
 import { timingSafeEqual, checkLoginRateLimit, recordLoginFailure, clearLoginFailures, buildSessionCookie } from '../_middleware';
 import { getTurnstileConfig, verifyTurnstileToken } from '../lib/turnstile';
-
-function escapeHTML(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
+import { escapeHTML } from '../lib/utils';
 
 async function createAdminSession(env, ttl = 86400) {
   const token = crypto.randomUUID();

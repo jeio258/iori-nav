@@ -290,6 +290,6 @@ test('home category navigation can render in the left sidebar', async () => {
   ]);
 
   assert.equal(html.includes('id="horizontalCategoryNav"'), false);
-  assert.equal(html.includes('lg:ml-64'), true);
-  assert.equal(html.includes('min-[550px]:hidden'), false);
+  assert.equal(html.includes('id="sidebarToggle"'), true);
+  assert.equal(html.includes('-translate-x-full'), true);
 });
